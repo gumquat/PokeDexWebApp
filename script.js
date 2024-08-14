@@ -1,5 +1,5 @@
 const pokemonCount = 1008;
-const pokemonPerLoad = 150;
+const pokemonPerLoad = 504;
 var pokedex = {};
 var currentLoadedCount = 0;
 
@@ -15,7 +15,16 @@ async function loadMorePokemon()
     let start = currentLoadedCount + 1;
     let end = Math.min(start + pokemonPerLoad - 1, pokemonCount);
     
+    // Add loading indicator
+    let loadingIndicator = document.createElement("p");
+    loadingIndicator.id = "loading-indicator";
+    loadingIndicator.innerText = "Loading...";
+    document.getElementById("pokemon-list").appendChild(loadingIndicator);
+    
     await getPokemonBulk(start, end);
+    
+    // Remove loading indicator
+    document.getElementById("loading-indicator").remove();
     
     for (let i = start; i <= end; i++) {
         let pokemon = document.createElement("div");
@@ -33,23 +42,23 @@ async function loadMorePokemon()
     
     currentLoadedCount = end;
     
+    // Manage the "Load More" button
+    let loadMoreButton = document.getElementById("load-more-button");
     if (currentLoadedCount < pokemonCount) {
-        if (!document.getElementById("load-more-button")) {
-            let loadMoreButton = document.createElement("button");
+        if (!loadMoreButton) {
+            loadMoreButton = document.createElement("button");
             loadMoreButton.id = "load-more-button";
             loadMoreButton.innerText = "Load More";
             loadMoreButton.addEventListener("click", loadMorePokemon);
-            document.getElementById("pokemon-list").after(loadMoreButton);
         }
-    } else {
-        let loadMoreButton = document.getElementById("load-more-button");
-        if (loadMoreButton) {
-            loadMoreButton.remove();
-        }
+        document.getElementById("pokemon-list").appendChild(loadMoreButton);
+    } else if (loadMoreButton) {
+        loadMoreButton.remove();
     }
-    // Scroll to the bottom of the list to show newly added Pokémon
+
+    // Scroll to show the newly added Pokémon
     let pokemonList = document.getElementById("pokemon-list");
-    pokemonList.scrollTop = pokemonList.scrollHeight;
+    pokemonList.scrollTop = pokemonList.scrollHeight - pokemonList.clientHeight;
 }
 
 async function getPokemonBulk(start, end)

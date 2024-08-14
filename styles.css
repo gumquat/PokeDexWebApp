@@ -68,6 +68,34 @@ body {
     overflow-y: auto;
 }
 
+#loading-indicator {
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+#load-more-button {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#load-more-button:hover {
+    background-color: #2980b9;
+}
+
 .type-box {
     padding: 3px;
     margin: 5px;
